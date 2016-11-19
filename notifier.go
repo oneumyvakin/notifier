@@ -201,7 +201,7 @@ func (notifier Notifier) loadDb() (db map[string]string, err error) {
 	defer dbFile.Close()
 
 	db = make(map[string]string)
-	err = json.NewDecoder(dbFile).Decode(db)
+	err = json.NewDecoder(dbFile).Decode(&db)
 	if err != nil {
 		return nil, fmt.Errorf("Notifier failed to load database: %s", err)
 	}
