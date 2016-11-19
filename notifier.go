@@ -42,7 +42,7 @@ func (notifier Notifier) Send(subject string, message string) error {
 		return fmt.Errorf("Notifier failed to send message: %s", err)
 	}
 
-	hash := notifier.getHash()
+	hash := notifier.getHash(subject)
 	if !notifier.needToSend(hash) {
 		notifier.Log.Printf("Skip message %s: %s %s", hash, subject, message)
 		return nil
@@ -121,16 +121,16 @@ func (notifier Notifier) needToSend(hash string) bool {
 	return true
 }
 
-func (notifier Notifier) getHash() (hash string) {
+func (notifier Notifier) getHash(subject string) (hash string) {
 	t := time.Now()
 
 	if notifier.Frequency == NotifyOnceHour {
-		hash = t.Format("2006-01-02-15") + ":" + notifier.MessageTag
+		hash = t.Format("2006-01-02-15") + ":" + notifier.MessageTag + ":" + subject
 		return
 	}
 
 	if notifier.Frequency == NotifyOnceDay {
-		hash = t.Format("2006-01-02") + ":" + notifier.MessageTag
+		hash = t.Format("2006-01-02") + ":" + notifier.MessageTag + ":" + subject
 		return
 	}
 
