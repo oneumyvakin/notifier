@@ -76,7 +76,7 @@ func (notifier Notifier) Send(subject string, message string) error {
 	return nil
 }
 
-func (notifier Notifier) setDefaults() error {
+func (notifier *Notifier) setDefaults() error {
 	if notifier.ApiKey == "" {
 		return errors.New("SendGrid API key is not set")
 	}
