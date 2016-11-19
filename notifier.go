@@ -172,15 +172,15 @@ func (notifier Notifier) saveDb(db map[string]string) (err error) {
 		notifier.DatabaseFilePath = "notifier.json"
 	}
 
-	dbFile, err := os.Open(notifier.DatabaseFilePath)
+	dbFile, err := os.OpenFile(notifier.DatabaseFilePath, os.O_WRONLY, os.ModeExclusive)
 	if err != nil {
-		return fmt.Errorf("Notifier failed to save database: %s", err)
+		return fmt.Errorf("Notifier failed to save database: Failed to open database file: %s", err)
 	}
 	defer dbFile.Close()
 
 	err = json.NewEncoder(dbFile).Encode(db)
 	if err != nil {
-		return fmt.Errorf("Notifier failed to save database: %s", err)
+		return fmt.Errorf("Notifier failed to save database: Failed to encode json to file: %s", err)
 	}
 
 	return
